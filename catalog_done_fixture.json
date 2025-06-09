@@ -30,7 +30,7 @@
     "pk": 1,
     "fields": {
         "category_name": "smartphone",
-        "discription": "Смартфоны"
+        "description": "Смартфоны"
     }
 },
 {
@@ -38,7 +38,7 @@
     "pk": 2,
     "fields": {
         "category_name": "Music instruments",
-        "discription": "Music"
+        "description": "Music"
     }
 },
 {
@@ -46,7 +46,7 @@
     "pk": 3,
     "fields": {
         "category_name": "Бытовые продукты",
-        "discription": "Бытовые продукты"
+        "description": "Бытовые продукты"
     }
 },
 {
@@ -54,7 +54,7 @@
     "pk": 4,
     "fields": {
         "category_name": "товары для дома",
-        "discription": "бытовые товары"
+        "description": "бытовые товары"
     }
 }
 ]

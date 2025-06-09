@@ -7,39 +7,72 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('category_name', models.CharField(max_length=150, verbose_name='Название категории')),
-                ('discription', models.CharField(max_length=150, verbose_name='Описание')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "category_name",
+                    models.CharField(max_length=150, verbose_name="Название категории"),
+                ),
+                (
+                    "description",
+                    models.CharField(max_length=150, verbose_name="Описание"),
+                ),
             ],
             options={
-                'verbose_name': 'Категория',
-                'verbose_name_plural': 'Категории',
-                'ordering': ['category_name'],
+                "verbose_name": "Категория",
+                "verbose_name_plural": "Категории",
+                "ordering": ["category_name"],
             },
         ),
         migrations.CreateModel(
-            name='Product',
+            name="Product",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('product_name', models.CharField(max_length=150, verbose_name='Название')),
-                ('description', models.CharField(max_length=150, verbose_name='Описание')),
-                ('image', models.ImageField(upload_to='', verbose_name='Изображение')),
-                ('category', models.CharField(max_length=150, verbose_name='Категория')),
-                ('price', models.CharField(max_length=150, verbose_name='Цена')),
-                ('created_at', models.DateField(verbose_name='Дата создания')),
-                ('updated_at', models.DateField(verbose_name='Дата последнего изменения')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "product_name",
+                    models.CharField(max_length=150, verbose_name="Название"),
+                ),
+                (
+                    "description",
+                    models.CharField(max_length=150, verbose_name="Описание"),
+                ),
+                ("image", models.ImageField(upload_to="", verbose_name="Изображение")),
+                (
+                    "category",
+                    models.CharField(max_length=150, verbose_name="Категория"),
+                ),
+                ("price", models.CharField(max_length=150, verbose_name="Цена")),
+                ("created_at", models.DateField(verbose_name="Дата создания")),
+                (
+                    "updated_at",
+                    models.DateField(verbose_name="Дата последнего изменения"),
+                ),
             ],
             options={
-                'verbose_name': 'Продукт',
-                'verbose_name_plural': 'Продукты',
-                'ordering': ['product_name'],
+                "verbose_name": "Продукт",
+                "verbose_name_plural": "Продукты",
+                "ordering": ["product_name"],
             },
         ),
     ]
