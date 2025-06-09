@@ -1,0 +1,60 @@
+[
+{
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+        "product_name": "Тарелка",
+        "description": "Фарфор",
+        "image": "",
+        "category": "товары для дома бытовые товары",
+        "price": "500",
+        "created_at": "2025-02-05",
+        "updated_at": "2025-02-05"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 4,
+    "fields": {
+        "product_name": "Ложка",
+        "description": "алюминиевая ",
+        "image": "",
+        "category": "товары для дома бытовые товары",
+        "price": "100",
+        "created_at": "2025-02-05",
+        "updated_at": "2025-02-05"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+        "category_name": "smartphone",
+        "discription": "Смартфоны"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+        "category_name": "Music instruments",
+        "discription": "Music"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+        "category_name": "Бытовые продукты",
+        "discription": "Бытовые продукты"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 4,
+    "fields": {
+        "category_name": "товары для дома",
+        "discription": "бытовые товары"
+    }
+}
+]
