@@ -1,5 +1,7 @@
 from django import forms
+from django.contrib.auth import logout
 from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import redirect
 
 from .models import CustomUsers
 
@@ -23,3 +25,9 @@ class UserCreationsForm(UserCreationForm):
             "password1",
             "password2",
         ]
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get("phone_number")
+        if phone_number and not phone_number.is_digit():
+            raise forms.ValidationError("Номер телефона должен состоять только из цифр")
+        return phone_number

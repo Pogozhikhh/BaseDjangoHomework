@@ -25,3 +25,5 @@ class RegisterView(CreateView):
             user_email,
         ]
         send_mail(subject, message, from_email, recipient_list)
+
+
