@@ -1,4 +1,6 @@
+from django.contrib.auth.models import User
 from django.db import models
+from django.conf import settings
 
 
 class Category(models.Model):
@@ -32,9 +34,13 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name="Цена")
     created_at = models.DateField(verbose_name="Дата создания")
     updated_at = models.DateField(verbose_name="Дата последнего изменения")
-    is_published = models.BooleanField(
-        default=False,
-        verbose_name='Опубликовано'
+    is_published = models.BooleanField(default=False, verbose_name="Опубликовано")
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        verbose_name="Владелец",
     )
 
     def __str__(self):
@@ -48,4 +54,7 @@ class Product(models.Model):
         verbose_name_plural = "Продукты"
         ordering = [
             "product_name",
+        ]
+        permissions = [
+            ("can_unpublish_product", "Can unpublish product"),
         ]

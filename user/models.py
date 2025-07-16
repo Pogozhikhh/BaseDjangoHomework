@@ -13,7 +13,7 @@ class CustomUsers(AbstractUser):
     REQUIRED_FIELDS = []
 
     class Meta:
-        db_table = 'user_customusers'
+        db_table = "user_customusers"
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
 

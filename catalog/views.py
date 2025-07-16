@@ -2,8 +2,9 @@ from gc import get_objects
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.sessions.backends.base import UpdateError
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
@@ -40,12 +41,27 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     form_class = ProductForm
     success_url = reverse_lazy("catalog:products")
 
+    def form_valid(self, form):
+        product = form.save()
+        user = self.request.user
+        product.owner = user
+        product.save()
+        return super().form_valid(form)
+
 
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     template_name = "product_form.html"
     form_class = ProductForm
     success_url = reverse_lazy("catalog:products")
+
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        if self.object.owner != request.user:
+            raise PermissionDenied("У вас нет прав на редактирование этого продукта")
+
+        return super().dispatch(request, *args, **kwargs)
 
 
 class ProductDeleteView(LoginRequiredMixin, DetailView):
@@ -55,5 +71,7 @@ class ProductDeleteView(LoginRequiredMixin, DetailView):
 
     def post(self, request, pk):
         product = get_object_or_404(Product, pk=pk)
+        if not (request.user == product.owner) or request.user.has_perm('catalog.can_unpublish_product'):
+            return HttpResponseForbidden("У вас недостаточно прав для снятия продукта с публикации")
         product.delete()
         return redirect("catalog:products")
