@@ -32,6 +32,10 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name="Цена")
     created_at = models.DateField(verbose_name="Дата создания")
     updated_at = models.DateField(verbose_name="Дата последнего изменения")
+    is_published = models.BooleanField(
+        default=False,
+        verbose_name='Опубликовано'
+    )
 
     def __str__(self):
         return (

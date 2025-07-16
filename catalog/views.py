@@ -1,5 +1,6 @@
 from gc import get_objects
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.sessions.backends.base import UpdateError
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
@@ -27,27 +28,27 @@ class ProductListView(ListView):
     context_object_name = "products"
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     template_name = "product_detail.html"
     context_object_name = "product"
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     template_name = "product_form.html"
     form_class = ProductForm
     success_url = reverse_lazy("catalog:products")
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     template_name = "product_form.html"
     form_class = ProductForm
     success_url = reverse_lazy("catalog:products")
 
 
-class ProductDeleteView(DetailView):
+class ProductDeleteView(LoginRequiredMixin, DetailView):
     model = Product
     template_name = "product_delete.html"
     success_url = reverse_lazy("catalog:products")
