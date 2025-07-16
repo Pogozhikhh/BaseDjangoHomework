@@ -29,9 +29,13 @@ class Product(models.Model):
         null=True,
         blank=True,
     )
-    price = models.CharField(max_length=150, verbose_name="Цена")
+    price = models.IntegerField(verbose_name="Цена")
     created_at = models.DateField(verbose_name="Дата создания")
     updated_at = models.DateField(verbose_name="Дата последнего изменения")
+    is_published = models.BooleanField(
+        default=False,
+        verbose_name='Опубликовано'
+    )
 
     def __str__(self):
         return (
