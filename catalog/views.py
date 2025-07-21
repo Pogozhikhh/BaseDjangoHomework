@@ -1,16 +1,19 @@
 from gc import get_objects
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.sessions.backends.base import UpdateError
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseForbidden
-from django.urls import reverse_lazy, reverse
+from django.http import HttpResponseForbidden
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 from .forms import ProductForm, ProductModeratorForm
-from catalog.models import Product
+from catalog.models import Product, Category
+from catalog.services import get_products_in_category
 
 
 class HomeListView(ListView):
@@ -29,7 +32,15 @@ class ProductListView(ListView):
     template_name = "products.html"
     context_object_name = "products"
 
+    def get_queryset(self):
+        queryset = cache.get("my_queryset")
+        if not queryset:
+            queryset = super().get_queryset()
+            cache.set("my_queryset", queryset, 60 * 15)
+        return queryset
 
+
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     template_name = "product_detail.html"
@@ -72,8 +83,33 @@ class ProductDeleteView(LoginRequiredMixin, DetailView):
 
     def post(self, request, pk):
         product = get_object_or_404(Product, pk=pk)
-        if not (request.user == product.owner) or request.user.has_perm('catalog.can_unpublish_product'):
-            return HttpResponseForbidden("У вас недостаточно прав для снятия продукта с публикации")
+        if not (request.user == product.owner) or request.user.has_perm(
+            "catalog.can_unpublish_product"
+        ):
+            return HttpResponseForbidden(
+                "У вас недостаточно прав для снятия продукта с публикации"
+            )
         product.delete()
         return redirect("catalog:products")
 
+
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'category.html'
+    context_object_name = 'categories'
+
+
+class ProductByCategoryListView(ListView):
+    model = Category
+    template_name = 'product_list.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        category_id = self.kwargs['category_id']
+        return get_products_in_category(category_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category_id = self.kwargs['category_id']
+        context['category'] = Category.objects.get(pk=category_id)
+        return context

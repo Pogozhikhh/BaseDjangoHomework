@@ -9,6 +9,8 @@ from catalog.views import (
     ProductCreateView,
     ProductUpdateView,
     ProductDeleteView,
+    ProductByCategoryListView,
+    CategoryListView,
 )
 
 app_name = "catalog"
@@ -27,4 +29,6 @@ urlpatterns = [
     path(
         "products/<int:pk>/delete/", ProductDeleteView.as_view(), name="product_delete"
     ),
+    path('category/', CategoryListView.as_view(), name='category'),
+    path('category/<int:category_id>/', ProductByCategoryListView.as_view(), name='products_by_category')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
